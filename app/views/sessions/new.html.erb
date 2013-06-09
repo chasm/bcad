@@ -1,0 +1,60 @@
+<div class="row login-page">
+  <div class="span3">
+    <img src="/assets/megan.png" alt="">
+  </div>
+  <div class="span5">
+    <form method="POST" action="/login">
+      <fieldset>
+        <legend>Please log in</legend>
+        <p>
+          <input type="text" id="email" name="email" placeholder="Email address">
+        </p>
+        <p>
+          <input type="password" id="password" name="password" placeholder="Password">
+          <button id="show_hide_password_btn" class="btn btn-warning" data-toggle="button">Show Password</button>
+        </p>
+      </fieldset>
+      <p>
+        <input type="submit" value="Log in" class="btn btn-info">
+      </p>
+    </form>
+  </div>
+  <div class="span4">
+    <fieldset>
+      <legend>Forgot your password?</legend>
+
+      <p>
+        To reset your password, simply leave the password field blank above and
+        submit the form. A coded reset link will be sent to you via email. Be sure
+        to check your spam bin if it doesn't arrive shortly.
+      </p>
+    </fieldset>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(function() {
+    "use strict";
+  
+    var user_password, show_hide_password_btn;
+  
+    user_password = $('#password');
+    show_hide_password_btn = $('#show_hide_password_btn');
+  
+    show_hide_password_btn.on('click', function(event) {
+      if ($(this).hasClass('btn-success')) {
+        user_password.attr('type','password');
+        show_hide_password_btn.html("Show Password");
+        show_hide_password_btn.removeClass('btn-success');
+        show_hide_password_btn.addClass('btn-warning');
+      
+      } else {
+        user_password.attr('type','text');
+        show_hide_password_btn.html("Hide Password");
+        show_hide_password_btn.removeClass('btn-warning');
+        show_hide_password_btn.addClass('btn-success');
+      }
+      return false;
+    });
+  });
+</script>

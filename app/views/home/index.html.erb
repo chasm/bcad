@@ -1,0 +1,167 @@
+<script type="text/x-handlebars">
+  <div id="wrap">
+    {{view BCAuto.TopbarView}}
+    <div id="main" class="container">
+      {{outlet}}
+    </div>
+    <div id="push"></div>
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="topbar">
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="brand" href="#">Bridge City Automotive</a>
+        <div class="nav-collapse collapse">
+          <ul class="nav">
+            <li>{{#linkTo automobiles }}Autos{{/linkTo}}</li>
+            <li>{{#linkTo registrants }}Registrants{{/linkTo}}</li>
+            <li>{{#linkTo solicitations }}Credit Apps{{/linkTo}}</li>
+            <li>{{#linkTo users }}Users{{/linkTo}}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="index">
+  <p>Dashboard</p>
+</script>
+
+<script type="text/x-handlebars" data-template-name="automobiles">
+  <div class="row">
+    <div class="span3">
+      <table class="list-table">
+        <caption>{{caption}}</caption>
+        <tbody>
+          {{#each automobile in controller}}
+            <tr>
+              <td>{{#linkTo automobiles.detail automobile}}{{automobile.name}}{{/linkTo}}</td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+    <div class="span9">
+      {{outlet}}
+    </div>
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="automobiles/new">
+  <p>Add an Automobile</p>
+</script>
+
+<script type="text/x-handlebars" data-template-name="automobiles/detail">
+  <p>Automobile #{{stockNumber}}</p>
+</script>
+
+<script type="text/x-handlebars" data-template-name="automobiles/edit">
+  <p>Edit Automobile #{{stockNumber}}</p>
+</script>
+
+<script type="text/x-handlebars" data-template-name="solicitations">
+  <div class="row">
+    <div class="span3">
+      <table class="list-table">
+        <caption>Credit Apps</caption>
+        <tbody>
+          {{#each solicitation in model}}
+            <tr>
+              <td>{{#linkTo solicitations.detail solicitation}}{{solicitation.name}}{{/linkTo}}</td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+    <div class="span9">
+      {{outlet}}
+    </div>
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="solicitations/new">
+  <p>Add an Solicitation</p>
+</script>
+
+<script type="text/x-handlebars" data-template-name="solicitations/detail">
+  <p>Solicitation for {{loanAmount}}</p>
+</script>
+
+<script type="text/x-handlebars" data-template-name="solicitations/edit">
+  <p>Edit Solicitation for {{loanAmount}}</p>
+</script>
+
+<script type="text/x-handlebars" data-template-name="registrants">  <div class="row">
+    <div class="span3">
+      <table class="list-table">
+        <caption>Registrants</caption>
+        <tbody>
+          {{#each registrant in model}}
+            <tr>
+              <td>{{#linkTo registrants.detail registrant}}{{registrant.name}}{{/linkTo}}</td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+    <div class="span9">
+      {{outlet}}
+    </div>
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="registrants/new">
+  <p>Add an Registrant</p>
+</script>
+
+<script type="text/x-handlebars" data-template-name="registrants/detail">
+  <p>Registrant with email {{email}}</p>
+</script>
+
+<script type="text/x-handlebars" data-template-name="registrants/edit">
+  <p>Edit Registrant with email {{email}}</p>
+</script>
+
+<script type="text/x-handlebars" data-template-name="users">
+  <div class="row">
+    <div class="span3">
+      <table class="list-table">
+        <caption>Users</caption>
+        <tbody>
+          {{#each user in model}}
+            <tr>
+              <td>{{#linkTo users.detail user}}{{user.name}}{{/linkTo}}</td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+    <div class="span9">
+      {{outlet}}
+    </div>
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="users/new">
+  <p>Add an User</p>
+</script>
+
+<script type="text/x-handlebars" data-template-name="users/detail">
+  <p>User with first name {{nameFirst}}</p>
+</script>
+
+<script type="text/x-handlebars" data-template-name="users/edit">
+  <p>Edit User with first name {{nameFirst}}</p>
+</script>
+
+<script type="text/x-handlebars" data-template-name="profile">
+  <p>User Profile</p>
+</script>
