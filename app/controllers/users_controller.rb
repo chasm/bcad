@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
   def index
     users = @database["users"].query.all.map do |x|
-      {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
+      {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" || k == "salt" || k == "fish" }
     end
     
     # Sideload telephones
@@ -11,18 +11,65 @@ class UsersController < ApplicationController
       {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
     end
     
-    render :json => { users: users, telephones: telephones }
+    # Sideload employers
+    employers = @database["employers"].query.all.map do |x|
+      {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
+    end
+    
+    # Sideload residences
+    residences = @database["residences"].query.all.map do |x|
+      {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
+    end
+    
+    # Sideload solicitations
+    solicitations = @database["solicitations"].query.all.map do |x|
+      {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
+    end
+    
+    render :json => {
+      users: users,
+      telephones: telephones,
+      employers: employers,
+      residences: residences,
+      solicitations: solicitations
+    }
   end
 
   def show
     users = @database["users"].query.by_example({ _key: params[:id] }).map do |x|
+      {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" || k == "salt" || k == "fish" }
+    end
+    
+    # Sideload telephones
+    telephones = @database["telephones"].query.by_example({ user_id: params[:id] }).map do |x|
+      {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
+    end
+    
+    # Sideload employers
+    employers = @database["employers"].query.by_example({ user_id: params[:id] }).map do |x|
+      {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
+    end
+    
+    # Sideload residences
+    residences = @database["residences"].query.by_example({ user_id: params[:id] }).map do |x|
+      {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
+    end
+    
+    # Sideload solicitations
+    solicitations = @database["solicitations"].query.by_example({ user_id: params[:id] }).map do |x|
       {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
     end
     
     if users.empty?
       head :not_found
     else
-      render :json => { users: users }
+      render :json => {
+        user: users[0],
+        telephones: telephones,
+        employers: employers,
+        residences: residences,
+        solicitations: solicitations
+      }
     end
   end
 
@@ -42,9 +89,9 @@ class UsersController < ApplicationController
       [ u, :created ]
     end
     
-    user["name_first"] = params[:user][:name_first]
-    user["name_middle"] = params[:user][:name_middle]
-    user["name_last"] = params[:user][:name_last]
+    user["name_first"] = params[:user][:name_first] || user["name_first"]
+    user["name_middle"] = params[:user][:name_middle] || user["name_middle"]
+    user["name_last"] = params[:user][:name_last] || user["name_last"]
     
     resp = user.save
     
@@ -52,17 +99,34 @@ class UsersController < ApplicationController
       render :json => resp["error"], status: :unprocessable_entity
     else
       users = @database["users"].query.by_example({ _key: id }).map do |x|
-        {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
+        {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" || k == "salt" || k == "fish" }
       end
       
-      render :json => { users: users }, :status => status
+      # render :json => { users: users }, :status => status
+      head status
     end
   end
 
   def destroy
     begin
-      users = @database["users"].query.first_example({ _key: params[:id] }).each do |user|
+      @database["users"].query.first_example({ _key: params[:id] }).each do |user|
         user.delete
+      end
+      
+      @database["telephones"].query.by_example({ user_id: params[:id] }).each do |telephone|
+        telephone.delete
+      end
+      
+      @database["employers"].query.by_example({ user_id: params[:id] }).each do |employer|
+        employer.delete
+      end
+      
+      @database["residences"].query.by_example({ user_id: params[:id] }).each do |residence|
+        residence.delete
+      end
+      
+      @database["solicitations"].query.by_example({ user_id: params[:id] }).each do |solicitation|
+        solicitation.delete
       end
       
       head :no_content

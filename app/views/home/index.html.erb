@@ -99,35 +99,35 @@
   <p>Edit Solicitation for {{loanAmount}}</p>
 </script>
 
-<script type="text/x-handlebars" data-template-name="registrants">  <div class="row">
-    <div class="span3">
-      <table class="list-table">
+<script type="text/x-handlebars" data-template-name="registrants">
+  <div class="row">
+    <div class="span12">
+      <div class="pull-right">
+        <button {{action "purgeExpired"}} class="btn btn-danger">Purge Expired</button>
+      </div>
+      <table class="full-table">
         <caption>Registrants</caption>
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Code</th>
+            <th>Expires at</th>
+            <th></th>
+          </tr>
+        </thead>
         <tbody>
           {{#each registrant in model}}
             <tr>
-              <td>{{#linkTo registrants.detail registrant}}{{registrant.name}}{{/linkTo}}</td>
+              <td>{{registrant.email}}</td>
+              <td>{{registrant.id}}</td>
+              <td>{{datetime registrant.expiresAt}}</td>
+              <td class="table-buttons"><button {{action "removeRegistrant" registrant}} class="btn btn-danger">Delete</button></td>
             </tr>
           {{/each}}
         </tbody>
       </table>
     </div>
-    <div class="span9">
-      {{outlet}}
-    </div>
   </div>
-</script>
-
-<script type="text/x-handlebars" data-template-name="registrants/new">
-  <p>Add an Registrant</p>
-</script>
-
-<script type="text/x-handlebars" data-template-name="registrants/detail">
-  <p>Registrant with email {{email}}</p>
-</script>
-
-<script type="text/x-handlebars" data-template-name="registrants/edit">
-  <p>Edit Registrant with email {{email}}</p>
 </script>
 
 <script type="text/x-handlebars" data-template-name="users">
@@ -151,11 +151,23 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="users/new">
-  <p>Add an User</p>
+  <form>
+    <fieldset>
+      <legend>Add a User</legend>
+      <div>{{view Ember.TextField valueBinding="email" placeholder="Email address"}}</div>
+      <div>{{view Ember.TextField valueBinding="nameFirst" placeholder="First name"}}</div>
+      <div>{{view Ember.TextField valueBinding="nameMiddle" placeholder="Middle name"}}</div>
+      <div>{{view Ember.TextField valueBinding="nameLast" placeholder="Last name"}}</div>
+    </fieldset>
+  </form>
 </script>
 
 <script type="text/x-handlebars" data-template-name="users/detail">
-  <p>User with first name {{nameFirst}}</p>
+  <fieldset>
+    <legend>{{name}}</legend>
+    <p>{{email}}</p>
+    <p>{{logins.length}} logins</p>
+  </fieldset>
 </script>
 
 <script type="text/x-handlebars" data-template-name="users/edit">

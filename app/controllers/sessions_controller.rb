@@ -33,17 +33,20 @@ class SessionsController < ApplicationController
       if user
         begin
           login = @database["logins"].create_document({_key: id})
-          login["user_id"] = user.id
-          login["session"] = session[:session_id]
-          login["ip_address"] = request.remote_ip
-          login["user_agent"] = request.user_agent
-          login["referer"] = request.referer
+          
+          login["user_id"]      = user.id
+          login["session"]      = session[:session_id]
+          login["ip_address"]   = request.remote_ip
+          login["user_agent"]   = request.user_agent
+          login["referer"]      = request.referer
           login["logged_in_at"] = DateTime.now.to_json
+          
           login.save
         
-          session[:login_id] = login.id
-          user["login_ids"] = user["login_ids"] || []
-          user["login_ids"] << login.id
+          session[:login_id] =  login.id
+          user["login_ids"]  =  user["login_ids"] || []
+          user["login_ids"]  << login.id
+          
           user.save
         rescue
         end
@@ -77,13 +80,14 @@ class SessionsController < ApplicationController
   private
   
   def authenticate(email, password)
-    if user = @database["users"].query.first_example({ email: email }).first
+    begin
+      user = @database["users"].query.first_example({ email: email }).first
       if user["fish"] == BCrypt::Engine.hash_secret(password, user["salt"])
         user
       else
         nil
       end
-    else
+    rescue
       nil
     end
   end

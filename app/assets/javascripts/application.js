@@ -16,6 +16,7 @@
 //= require ./vendor/handlebars
 //= require ./vendor/ember
 //= require ./vendor/ember-data
+//= require ./vendor/jest_adapter
 //= require ./vendor/localstorage_adapter
 //= require ./vendor/moment
 //= require ./vendor/numeral

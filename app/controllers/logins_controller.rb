@@ -4,29 +4,47 @@ class LoginsController < ApplicationController
   before_filter :get_user_id
   
   def index
-    out = @database["logins"].query.by_example({ user_id: @user_id }).map do |x|
-      {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
+    puts ">>>>> index params: "
+    puts params
+    
+    logins = if params[:user_id]
+      @database["logins"].query.by_example({ user_id: @user_id }).map do |x|
+        {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
+      end
+    else
+      @database["logins"].query.all.map do |x|
+        {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
+      end
     end
     
-    render :json => out
+    render :json => { logins: logins }
   end
 
   def show
-    out = @database["logins"].query.first_example({ user_id: @user_id, _key: params[:id] }).map do |x|
-      {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
+    puts ">>>>> show params: "
+    puts params
+    
+    logins = if params[:user_id]
+      @database["logins"].query.first_example({ user_id: @user_id, _key: params[:id] }).map do |x|
+        {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
+      end
+    else
+      @database["logins"].query.first_example({ _key: params[:id] }).map do |x|
+        {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
+      end
     end
     
-    if out.empty?
+    if logins.empty?
       head :not_found
     else
-      render :json => out
+      render :json => { logins: logins }
     end
   end
 
   def destroy
     begin
-      users = @database["users"].query.first_example({ user_id: @user_id, _key: params[:id] }).each do |user|
-        user.delete
+      @database["logins"].query.first_example({ user_id: @user_id, _key: params[:id] }).each do |login|
+        login.delete
       end
       
       head :no_content
@@ -40,6 +58,6 @@ class LoginsController < ApplicationController
   def get_user_id
     @user_id = params[:user_id]
     
-    head :unprocessable_entity unless @user_id
+    # head :unprocessable_entity unless @user_id
   end
 end

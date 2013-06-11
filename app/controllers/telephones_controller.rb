@@ -37,8 +37,8 @@ class TelephonesController < ApplicationController
       end
     
     telephone["user_id"] = @user_id
-    telephone["digits"] = params[:telephone][:digits]
-    telephone["usage"] = params[:telephone][:usage]
+    telephone["digits"]  = params[:telephone][:digits] || telephone["digits"]
+    telephone["usage"]   = params[:telephone][:usage]  || telephone["usage"]
     
     resp = telephone.save
     
@@ -55,7 +55,7 @@ class TelephonesController < ApplicationController
 
   def destroy
     begin
-      telephones = @database["telephones"].query.first_example({ user_id: @user_id, _key: params[:id] }).each do |telephone|
+      @database["telephones"].query.first_example({ user_id: @user_id, _key: params[:id] }).each do |telephone|
         telephone.delete
       end
       

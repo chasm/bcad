@@ -1,4 +1,5 @@
 //= require_self
+//= require ./helpers
 //= require ./models/automobile
 //= require ./models/employer
 //= require ./models/login
@@ -16,6 +17,10 @@
 //= require ./controllers/users_controller
 //= require ./views/topbar_view
 //= require ./router
+
+Ember.TextSupport.reopen({
+  attributeBindings: ["required"]
+})
 
 BCAuto = Ember.Application.create({
   LOG_TRANSITIONS: true

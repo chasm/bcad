@@ -11,6 +11,7 @@ gem 'js-routes'
 gem 'jquery-rails'
 gem 'bcrypt-ruby'
 gem 'carrierwave'
+gem 'mini_magick'
 
 group :development, :test do
   gem 'better_errors'

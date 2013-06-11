@@ -52,19 +52,29 @@ a:link, a:visited {
   margin-top: 70px;
 }
 
-table.list-table {
+table.list-table,
+table.full-table {
   width: 100%;
 }
 
-table.list-table caption {
+table.list-table caption,
+table.full-table caption {
   font-weight: normal;
   font-size: 28px;
-  line-height: 36px;
-  text-align: right;
+  line-height: 40px;
   color: #5da423;
 }
 
-table.list-table tbody tr {
+table.list-table caption {
+  text-align: right;
+}
+
+table.full-table caption {
+  text-align: left;
+}
+
+table.list-table tbody tr,
+table.full-table tbody tr {
   border-top: 1px solid #2ba6cb;
 }
 
@@ -72,6 +82,21 @@ table.list-table tbody tr td {
   text-align: right;
   font-size: 16px;
   line-height: 48px;
+}
+
+table.full-table thead tr th {
+  font-size: 16px;
+  line-height: 48px;
+  text-align: left;
+}
+
+table.full-table tbody tr td {
+  font-size: 16px;
+  line-height: 48px;
+}
+
+table.full-table tbody tr td.table-buttons {
+  text-align: right;
 }
 
 /* Set the fixed height of the footer here */

@@ -1,9 +1,9 @@
 BCAuto.Store = DS.Store.extend({
   revision: 13,
-  adapter: DS.RESTAdapter
+  adapter: DS.JESTAdapter
 });
 
-DS.RESTAdapter.reopen({
+DS.JESTAdapter.reopen({
   namespace: 'api'
 });
 
