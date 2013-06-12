@@ -64,7 +64,7 @@ class UsersController < ApplicationController
       head :not_found
     else
       render :json => {
-        user: users[0],
+        users: users,
         telephones: telephones,
         employers: employers,
         residences: residences,
@@ -139,7 +139,7 @@ class UsersController < ApplicationController
   
   def email_is_unique
     email = params[:user][:email] && params[:user][:email].downcase
-    puts ">>>> EMAIL:"; puts email
+    
     begin
       @database["users"].query.first_example({ email: email }).first
       false

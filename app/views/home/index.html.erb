@@ -25,6 +25,9 @@
             <li>{{#linkTo solicitations }}Credit Apps{{/linkTo}}</li>
             <li>{{#linkTo users }}Users{{/linkTo}}</li>
           </ul>
+          <ul class="nav pull-right">
+            <li><a href="/logout">Logout</a></li>
+          </ul>
         </div>
       </div>
     </div>
@@ -132,6 +135,12 @@
 
 <script type="text/x-handlebars" data-template-name="users">
   <div class="row">
+    <div class="span12">
+      <div class="pull-right">
+        <button id="edit_mode" class="btn btn-success" {{action "toggleMode"}}>Edit Mode</button>
+        <button id="new_user" class="btn btn-info" {{action "newUser"}}>Add a User</button>
+      </div>
+    </div>
     <div class="span3">
       <table class="list-table">
         <caption>Users</caption>
@@ -158,6 +167,7 @@
       <div>{{view Ember.TextField valueBinding="nameFirst" placeholder="First name"}}</div>
       <div>{{view Ember.TextField valueBinding="nameMiddle" placeholder="Middle name"}}</div>
       <div>{{view Ember.TextField valueBinding="nameLast" placeholder="Last name"}}</div>
+      <div><button class="btn btn-warning" {{action "createUser"}}>Save</button></div>
     </fieldset>
   </form>
 </script>
@@ -171,7 +181,16 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="users/edit">
-  <p>Edit User with first name {{nameFirst}}</p>
+  <form>
+    <fieldset>
+      <legend>Edit {{name}}</legend>
+      <div>{{view Ember.TextField valueBinding="email" placeholder="Email address"}}</div>
+      <div>{{view Ember.TextField valueBinding="nameFirst" placeholder="First name"}}</div>
+      <div>{{view Ember.TextField valueBinding="nameMiddle" placeholder="Middle name"}}</div>
+      <div>{{view Ember.TextField valueBinding="nameLast" placeholder="Last name"}}</div>
+      <div><button class="btn btn-warning" {{action "createUser"}}>Save Changes</button></div>
+    </fieldset>
+  </form>
 </script>
 
 <script type="text/x-handlebars" data-template-name="profile">
