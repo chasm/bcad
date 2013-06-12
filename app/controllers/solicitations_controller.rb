@@ -57,6 +57,8 @@ class SolicitationsController < ApplicationController
       rescue
         [ @database["solicitations"].create_document({_key: id}), :created ]
       end
+
+    solicitation["status"] = params[:solicitation][:status].downcase if app_statuses.include?( params[:solicitation][:status].downcase ) || solicitation["status"]
     
     solicitation["drivers_license_number"] = params[:solicitation][:drivers_license_number] || solicitation["drivers_license_number"]
     solicitation["date_of_birth"]          = params[:solicitation][:date_of_birth]          || solicitation["date_of_birth"]
@@ -64,7 +66,6 @@ class SolicitationsController < ApplicationController
     solicitation["loan_amount"]            = params[:solicitation][:loan_amount]            || solicitation["loan_amount"]
     solicitation["sales_person"]           = params[:solicitation][:sales_person]           || solicitation["sales_person"]
     solicitation["authorized"]             = params[:solicitation][:authorized]             || solicitation["authorized"]
-    solicitation["status"]                 = params[:solicitation][:status]                 || solicitation["status"]
     
     resp = solicitation.save
     

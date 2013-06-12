@@ -1,16 +1,18 @@
 BCAuto.Automobile = DS.Model.extend({
   stockNumber: DS.attr('string'),
-  year: DS.attr('number'),
   make: DS.attr('string'),
   model: DS.attr('string'),
   color: DS.attr('string'),
   style: DS.attr('string'),
-  price: DS.attr('number'),
   status: DS.attr('string'),
+
+  year: DS.attr('number'),
+  price: DS.attr('number'),
   doors: DS.attr('number'),
   displacement: DS.attr('number'),
   cylinders: DS.attr('number'),
   mileage: DS.attr('number'),
+  
   carfax: DS.attr('boolean'),
   lowMiles: DS.attr('boolean'),
   fullyServiced: DS.attr('boolean'),
@@ -43,6 +45,7 @@ BCAuto.Automobile = DS.Model.extend({
   recentTires: DS.attr('boolean'),
   recentPaint: DS.attr('boolean'),
   recentTimingBelt: DS.attr('boolean'),
+  
   specialFeatures: DS.attr('string'),
   niceToHave: DS.attr('string'),
   extras: DS.attr('string'),

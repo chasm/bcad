@@ -99,6 +99,14 @@ table.full-table tbody tr td.table-buttons {
   text-align: right;
 }
 
+.auto-form-row {
+  height: 2.8em;
+}
+
+.btn-bca {
+  width: 220px;
+}
+
 /* Set the fixed height of the footer here */
 #push,
 #footer {
