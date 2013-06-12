@@ -24,7 +24,7 @@
             <li>{{#linkTo automobiles }}Autos{{/linkTo}}</li>
             <li>{{#linkTo applicants }}Applicants{{/linkTo}}</li>
             <li>{{#linkTo solicitations }}Credit Apps{{/linkTo}}</li>
-            <li>{{#linkTo registrants }}Registrants{{/linkTo}}</li>
+            <li>{{#linkTo registrants }}(Registrants){{/linkTo}}</li>
           </ul>
           <ul class="nav pull-right">
             <li><a href="/logout">Logout</a></li>
@@ -60,7 +60,139 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="automobiles/new">
-  <p>Add an Automobile</p>
+  <form>
+    <fieldset>
+      <legend>Add an Automobile</legend>
+      <div class="row">
+        <div class="span3">
+          <fieldset>
+            <legend>Required</legend>
+            <div class="auto-form-row">{{view Ember.TextField valueBinding="status" placeholder="Status"}}</div>
+            <div class="auto-form-row">{{view Ember.TextField valueBinding="stockNumber" placeholder="Stock Number"}}</div>
+            <div class="auto-form-row">{{view Ember.TextField valueBinding="price" placeholder="Price"}}</div>
+            <div class="auto-form-row">&nbsp;</div>
+          </fieldset>
+        </div>
+        <div class="span3">
+          <fieldset>
+            <legend>Brand</legend>
+            <div class="auto-form-row">{{view Ember.TextField valueBinding="year" placeholder="Year"}}</div>
+            <div class="auto-form-row">{{view Ember.TextField valueBinding="make" placeholder="Make"}}</div>
+            <div class="auto-form-row">{{view Ember.TextField valueBinding="model" placeholder="Model"}}</div>
+            <div class="auto-form-row">&nbsp;</div>
+          </fieldset>
+        </div>
+        <div class="span3">
+          <fieldset>
+            <legend>Body</legend>
+            <div class="auto-form-row">{{view Ember.TextField valueBinding="style" placeholder="Style"}}</div>
+            <div class="auto-form-row">{{view Ember.TextField valueBinding="doors" placeholder="Doors"}}</div>
+            <div class="auto-form-row">{{view Ember.TextField valueBinding="color" placeholder="Color"}}</div>
+            <div class="auto-form-row">&nbsp;</div>
+          </fieldset>
+        </div>
+        <div class="span3">
+          <fieldset>
+            <legend>Engine</legend>
+            <div class="auto-form-row">{{view Ember.TextField valueBinding="cylinders" placeholder="Cylinders"}}</div>
+            <div class="auto-form-row">{{view Ember.TextField valueBinding="displacement" placeholder="Displacement"}}</div>
+            <div class="auto-form-row"><button class="btn btn-bca">Recent Engine</div>
+            <div class="auto-form-row"><button class="btn btn-bca">Fully Serviced</div>
+          </fieldset>
+        </div>
+        <div class="span3">
+          <fieldset>
+            <legend>Mileage</legend>
+            <div class="auto-form-row">{{view Ember.TextField valueBinding="mileage" placeholder="Mileage"}}</div>
+            <div class="auto-form-row"><button class="btn btn-bca btn-success">Carfax</div>
+            <div class="auto-form-row"><button class="btn btn-bca btn-success">Low miles</div>
+            <div class="auto-form-row"><button class="btn btn-bca btn-success">Fully serviced</div>
+          </fieldset>
+        </div>
+        <div class="span3">
+          <fieldset>
+            <legend>Steering</legend>
+            <div class="auto-form-row"><button class="btn btn-bca btn-success">Tilt Steering</div>
+            <div class="auto-form-row"><button class="btn btn-bca">Telescoping Steering</div>
+            <div class="auto-form-row"><button class="btn btn-bca btn-success">Power Steering</div>
+            <div class="auto-form-row">&nbsp;</div>
+          </fieldset>
+        </div>
+        <div class="span3">
+          <fieldset>
+            <legend>Accessories</legend>
+            <div class="auto-form-row"><button class="btn btn-bca">Power Windows</div>
+            <div class="auto-form-row"><button class="btn btn-bca">Power Locks</div>
+            <div class="auto-form-row"><button class="btn btn-bca btn-success">Power Mirrors</div>
+            <div class="auto-form-row"><button class="btn btn-bca btn-success">Heated Mirrors</div>
+          </fieldset>
+        </div>
+        <div class="span3">
+          <fieldset>
+            <legend>Brakes</legend>
+            <div class="auto-form-row"><button class="btn btn-bca btn-success">Power Brakes</div>
+            <div class="auto-form-row"><button class="btn btn-bca btn-success">Antilock Brakes</div>
+            <div class="auto-form-row"><button class="btn btn-bca">Recent Brakes</div>
+            <div class="auto-form-row">&nbsp;</div>
+          </fieldset>
+        </div>
+        <div class="span3">
+          <fieldset>
+            <legend>Wheels</legend>
+            <div class="auto-form-row"><button class="btn btn-bca btn-success">Alloy Wheels</div>
+            <div class="auto-form-row"><button class="btn btn-bca btn-success">Recent Tires</div>
+            <div class="auto-form-row">&nbsp;</div>
+            <div class="auto-form-row">&nbsp;</div>
+          </fieldset>
+        </div>
+        <div class="span3">
+          <fieldset>
+            <legend>Drivetrain</legend>
+            <div class="auto-form-row"><button class="btn btn-bca btn-success">Five Speed</div>
+            <div class="auto-form-row"><button class="btn btn-bca btn-success">Automatic</div>
+            <div class="auto-form-row"><button class="btn btn-bca">All-Wheel Drive</div>
+            <div class="auto-form-row">&nbsp;</div>
+          </fieldset>
+        </div>
+        <div class="span3">
+          <fieldset>
+            <legend>Climate Control</legend>
+            <div class="auto-form-row"><button class="btn btn-bca btn-success">Air Conditioning</div>
+            <div class="auto-form-row"><button class="btn btn-bca btn-success">Auto Climate Control</div>
+            <div class="auto-form-row"><button class="btn btn-bca">Dual Zone</div>
+            <div class="auto-form-row">&nbsp;</div>
+          </fieldset>
+        </div>
+        <div class="span3">
+          <fieldset>
+            <legend>Entertainment</legend>
+            <div class="auto-form-row"><button class="btn btn-bca">AM/FM Radio</div>
+            <div class="auto-form-row"><button class="btn btn-bca btn-success">CD Player</div>
+            <div class="auto-form-row"><button class="btn btn-bca">MP3 Player</div>
+            <div class="auto-form-row"><button class="btn btn-bca btn-success">Television</div>
+          </fieldset>
+        </div>
+        <div class="span3">
+          <fieldset>
+            <legend>Interior</legend>
+            <div class="auto-form-row"><button class="btn btn-bca btn-success">Leather</div>
+            <div class="auto-form-row"><button class="btn btn-bca btn-success">Heated Seats (Front)</div>
+            <div class="auto-form-row"><button class="btn btn-bca">Heated Seats (Rear)</div>
+            <div class="auto-form-row">&nbsp;</div>
+          </fieldset>
+        </div>
+        <div class="span3">
+          <fieldset>
+            <legend>Exterior</legend>
+            <div class="auto-form-row"><button class="btn btn-bca btn-success">Roof Rack</div>
+            <div class="auto-form-row"><button class="btn btn-bca btn-success">Running Boards</div>
+            <div class="auto-form-row"><button class="btn btn-bca">Tow Package</div>
+            <div class="auto-form-row"><button class="btn btn-bca">Recent Paint</div>
+          </fieldset>
+        </div>
+      </div>
+    </fieldset>
+  </form>
 </script>
 
 <script type="text/x-handlebars" data-template-name="automobiles/detail">

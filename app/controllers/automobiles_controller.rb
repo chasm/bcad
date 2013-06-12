@@ -38,10 +38,8 @@ class AutomobilesController < ApplicationController
         [ @database["automobiles"].create_document({_key: id}), :created ]
       end
 
-    automobile["style"]                = params[:automobile][:style].downcase if styles.include?(
-      params[:automobile][:style].downcase )                                        || automobile["style"]
-    automobile["status"]               = params[:automobile][:status].downcase if statuses.include?(
-      params[:automobile][:status].downcase )                                       || automobile["status"]
+    automobile["style"] = params[:automobile][:style].downcase if auto_styles.include?( params[:automobile][:style].downcase ) || automobile["style"]
+    automobile["status"] = params[:automobile][:status].downcase if auto_statuses.include?( params[:automobile][:status].downcase ) || automobile["status"]
     
     automobile["stock_number"]         = params[:automobile][:stock_number]         || automobile["stock_number"]
     automobile["year"]                 = params[:automobile][:year]                 || automobile["year"]
@@ -123,42 +121,5 @@ class AutomobilesController < ApplicationController
     rescue
       head :not_found
     end
-  end
-
-  
-  def styles
-    [
-      "sedan",
-      "sports car",
-      "hatchback",
-      "sports utility vehicle",
-      "minivan",
-      "microcar",
-      "station wagon",
-      "van",
-      "recreational vehicle",
-      "limousine",
-      "other"
-    ]
-  end
-  
-  def statuses
-    ['available', 'pending', 'sold']
-  end
-  
-  def min_price
-    1000
-  end
-  
-  def max_price
-    100_000
-  end
-  
-  def first_year
-    1920
-  end
-  
-  def next_year
-    Date.today.year + 1
   end
 end
