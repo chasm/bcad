@@ -36,20 +36,20 @@
   $(function() {
     "use strict";
   
-    var user_password, show_hide_password_btn;
+    var password, show_hide_password_btn;
   
-    user_password = $('#password');
+    password = $('#password');
     show_hide_password_btn = $('#show_hide_password_btn');
   
     show_hide_password_btn.on('click', function(event) {
       if ($(this).hasClass('btn-success')) {
-        user_password.attr('type','password');
+        password.attr('type','password');
         show_hide_password_btn.html("Show Password");
         show_hide_password_btn.removeClass('btn-success');
         show_hide_password_btn.addClass('btn-warning');
       
       } else {
-        user_password.attr('type','text');
+        password.attr('type','text');
         show_hide_password_btn.html("Hide Password");
         show_hide_password_btn.removeClass('btn-warning');
         show_hide_password_btn.addClass('btn-success');

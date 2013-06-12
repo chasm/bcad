@@ -1,14 +1,14 @@
 class LoginsController < ApplicationController
   respond_to :json
   
-  before_filter :get_user_id
+  before_filter :get_applicant_id
   
   def index
     puts ">>>>> index params: "
     puts params
     
-    logins = if params[:user_id]
-      @database["logins"].query.by_example({ user_id: @user_id }).map do |x|
+    logins = if params[:applicant_id]
+      @database["logins"].query.by_example({ applicant_id: @applicant_id }).map do |x|
         {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
       end
     else
@@ -24,8 +24,8 @@ class LoginsController < ApplicationController
     puts ">>>>> show params: "
     puts params
     
-    logins = if params[:user_id]
-      @database["logins"].query.first_example({ user_id: @user_id, _key: params[:id] }).map do |x|
+    logins = if params[:applicant_id]
+      @database["logins"].query.first_example({ applicant_id: @applicant_id, _key: params[:id] }).map do |x|
         {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
       end
     else
@@ -43,7 +43,7 @@ class LoginsController < ApplicationController
 
   def destroy
     begin
-      @database["logins"].query.first_example({ user_id: @user_id, _key: params[:id] }).each do |login|
+      @database["logins"].query.first_example({ applicant_id: @applicant_id, _key: params[:id] }).each do |login|
         login.delete
       end
       
@@ -55,9 +55,9 @@ class LoginsController < ApplicationController
   
   private
   
-  def get_user_id
-    @user_id = params[:user_id]
+  def get_applicant_id
+    @applicant_id = params[:applicant_id]
     
-    # head :unprocessable_entity unless @user_id
+    # head :unprocessable_entity unless @applicant_id
   end
 end

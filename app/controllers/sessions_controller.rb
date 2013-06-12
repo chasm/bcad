@@ -8,13 +8,13 @@ class SessionsController < ApplicationController
   def create
     if params[:password].blank?
       begin
-        user = @database["users"].query.first_example({ email: params[:email] }).first
-        user["code"] = SecureRandom.uuid
-        user["expires_at"] = DateTime.now + 1.day
-        user.save
+        admin = @database["admins"].query.first_example({ email: params[:email] }).first
+        admin["code"] = SecureRandom.uuid
+        admin["expires_at"] = DateTime.now + 1.day
+        admin.save
         
         begin
-          UserMailer.reset_email(user, request).deliver
+          UserMailer.reset_email(admin, request).deliver
         rescue
           flash.now.alert = "There was a problem sending email. Please try again later or contact the webmaster."
       
@@ -28,30 +28,30 @@ class SessionsController < ApplicationController
         render "new"
       end
     else
-      user = authenticate(params[:email], params[:password])
+      admin = authenticate(params[:email], params[:password])
     
-      if user
+      if admin
         begin
           login = @database["logins"].create_document({_key: id})
           
-          login["user_id"]      = user.id
+          login["admin_id"]      = admin.id
           login["session"]      = session[:session_id]
           login["ip_address"]   = request.remote_ip
-          login["user_agent"]   = request.user_agent
+          login["admin_agent"]   = request.admin_agent
           login["referer"]      = request.referer
           login["logged_in_at"] = DateTime.now.to_json
           
           login.save
         
           session[:login_id] =  login.id
-          user["login_ids"]  =  user["login_ids"] || []
-          user["login_ids"]  << login.id
+          admin["login_ids"]  =  admin["login_ids"] || []
+          admin["login_ids"]  << login.id
           
-          user.save
+          admin.save
         rescue
         end
 
-        session[:user_id] = user.id
+        session[:user_id] = admin.id
       
         redirect_to root_url
       else
@@ -81,9 +81,9 @@ class SessionsController < ApplicationController
   
   def authenticate(email, password)
     begin
-      user = @database["users"].query.first_example({ email: email }).first
-      if user["fish"] == BCrypt::Engine.hash_secret(password, user["salt"])
-        user
+      admin = @database["admins"].query.first_example({ email: email }).first
+      if admin["fish"] == BCrypt::Engine.hash_secret(password, admin["salt"])
+        admin
       else
         nil
       end

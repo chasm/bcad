@@ -6,5 +6,5 @@ BCAuto.Login = DS.Model.extend({
   loggedInAt: DS.attr('date'),
   loggedOutAt: DS.attr('date'),
   
-  user: DS.belongsTo('BCAuto.User')
+  user: DS.belongsTo('BCAuto.Applicant')
 });

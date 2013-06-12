@@ -1,10 +1,10 @@
 class ResidencesController < ApplicationController
   respond_to :json
   
-  before_filter :get_user_id
+  before_filter :get_applicant_id
 
   def index
-    residences = @database["residences"].query.by_example({ user_id: @user_id }).map do |x|
+    residences = @database["residences"].query.by_example({ applicant_id: @applicant_id }).map do |x|
       {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
     end
     
@@ -12,7 +12,7 @@ class ResidencesController < ApplicationController
   end
 
   def show
-    residences = @database["residences"].query.by_example({ user_id: @user_id, _key: params[:id] }).map do |x|
+    residences = @database["residences"].query.by_example({ applicant_id: @applicant_id, _key: params[:id] }).map do |x|
       {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
     end
     
@@ -27,7 +27,7 @@ class ResidencesController < ApplicationController
     id = params[:id]
     
     residence, status = begin
-        [ @database["residences"].query.first_example({ user_id: @user_id, _key: id }).first, :ok ]
+        [ @database["residences"].query.first_example({ applicant_id: @applicant_id, _key: id }).first, :ok ]
       rescue
         begin
           [ @database["residences"].create_document({ _key: id }), :created ]
@@ -36,7 +36,7 @@ class ResidencesController < ApplicationController
         end
       end
     
-    residence["user_id"] = @user_id
+    residence["applicant_id"] = @applicant_id
     residence["address_line_one"]         = params[:residence][:address_line_one]         || residence["address_line_one"]
     residence["address_line_two"]         = params[:residence][:address_line_two]         || residence["address_line_two"]
     residence["city"]                     = params[:residence][:city]                     || residence["city"]
@@ -55,7 +55,7 @@ class ResidencesController < ApplicationController
     if resp["error"]
       render :json => resp["error"], status: :unprocessable_entity
     else
-      residences = @database["residences"].query.by_example({ user_id: @user_id, _key: id }).map do |x|
+      residences = @database["residences"].query.by_example({ applicant_id: @applicant_id, _key: id }).map do |x|
         {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
       end
       
@@ -65,7 +65,7 @@ class ResidencesController < ApplicationController
 
   def destroy
     begin
-      @database["residences"].query.first_example({ user_id: @user_id, _key: params[:id] }).each do |residence|
+      @database["residences"].query.first_example({ applicant_id: @applicant_id, _key: params[:id] }).each do |residence|
         residence.delete
       end
       
@@ -77,9 +77,9 @@ class ResidencesController < ApplicationController
   
   private
   
-  def get_user_id
-    @user_id = params[:user_id]
+  def get_applicant_id
+    @applicant_id = params[:applicant_id]
     
-    head :unprocessable_entity unless @user_id
+    head :unprocessable_entity unless @applicant_id
   end
 end

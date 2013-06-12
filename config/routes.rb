@@ -10,10 +10,15 @@ Bcad::Application.routes.draw do
 
   get "registrants" => "home#index"
 
-  get "users" => "home#index"
-  get "users/new" => "home#index"
-  get "users/:id" => "home#index"
-  get "users/:id/edit" => "home#index"
+  get "applicants" => "home#index"
+  get "applicants/new" => "home#index"
+  get "applicants/:id" => "home#index"
+  get "applicants/:id/edit" => "home#index"
+
+  get "admins" => "home#index"
+  get "admins/new" => "home#index"
+  get "admins/:id" => "home#index"
+  get "admins/:id/edit" => "home#index"
   
   get "register/:id" => "home#register"
 
@@ -35,7 +40,7 @@ Bcad::Application.routes.draw do
 
     resources :solicitations, :only => [ :index, :show, :update, :destroy ], defaults: { format: :json }
   
-    resources :users, :except => [ :new, :edit, :create ], defaults: { format: :json } do
+    resources :applicants, :except => [ :new, :edit, :create ], defaults: { format: :json } do
       resources :telephones, :except => [ :new, :edit, :create ], defaults: { format: :json }
       resources :employers, :except => [ :new, :edit, :create ], defaults: { format: :json }
       resources :residences, :except => [ :new, :edit, :create ], defaults: { format: :json }
@@ -44,6 +49,7 @@ Bcad::Application.routes.draw do
     end
 
     resources :registrants, :only => [ :index, :show, :destroy ], defaults: { format: :json }
+    resources :admins, :except => [ :new, :edit, :create ], defaults: { format: :json }
     
     # Temporary until RESTAdapter fixed...
     resources :logins, :only => [ :index, :show, :destroy ], defaults: { format: :json }

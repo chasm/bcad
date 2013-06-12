@@ -10,6 +10,6 @@ BCAuto.Residence = DS.Model.extend({
   monthlyRentOrMortgate: DS.attr('number'),
   isOwner: DS.attr('boolean'),
   
-  user: DS.belongsTo('BCAuto.User')
+  user: DS.belongsTo('BCAuto.Applicant')
 });
 

@@ -17,10 +17,10 @@ BCAuto.Router.map(function() {
     this.route('edit', { path: ':solicitation_id/edit' });
   });
 
-  this.resource('users', function() {
+  this.resource('applicants', function() {
     this.route('new');
-    this.route('detail', { path: ':user_id' });
-    this.route('edit', { path: ':user_id/edit' });
+    this.route('detail', { path: ':applicant_id' });
+    this.route('edit', { path: ':applicant_id/edit' });
   });
   
   this.route('profile');
@@ -71,11 +71,11 @@ BCAuto.SolicitationsRoute = Ember.Route.extend({
   }
 });
 
-BCAuto.UsersRoute = Ember.Route.extend({
+BCAuto.ApplicantsRoute = Ember.Route.extend({
   activate: function() {
-    document.title = "Users :: Bridge City Automotive";
+    document.title = "Applicants :: Bridge City Automotive";
   },
   model: function() {
-    return BCAuto.User.find();
+    return BCAuto.Applicant.find();
   }
 });

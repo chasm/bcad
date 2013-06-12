@@ -14,25 +14,25 @@ class SolicitationsController < ApplicationController
       {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
     end
     
-    user_id = solicitations.first["user_id"]
+    applicant_id = solicitations.first["applicant_id"]
     
-    # Sideload user
-    users = @database["users"].query.by_example({ _key: user_id }).map do |x|
+    # Sideload applicant
+    applicants = @database["applicants"].query.by_example({ _key: applicant_id }).map do |x|
       {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" || k == "salt" || k == "fish" }
     end
     
     # Sideload telephones
-    telephones = @database["telephones"].query.by_example({ user_id: user_id }).map do |x|
+    telephones = @database["telephones"].query.by_example({ applicant_id: applicant_id }).map do |x|
       {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
     end
     
     # Sideload employers
-    employers = @database["employers"].query.by_example({ user_id: user_id }).map do |x|
+    employers = @database["employers"].query.by_example({ applicant_id: applicant_id }).map do |x|
       {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
     end
     
     # Sideload residences
-    residences = @database["residences"].query.by_example({ user_id: user_id }).map do |x|
+    residences = @database["residences"].query.by_example({ applicant_id: applicant_id }).map do |x|
       {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
     end
     
@@ -41,7 +41,7 @@ class SolicitationsController < ApplicationController
     else
       render :json => {
         solicitations: solicitations,
-        users: users,
+        applicants: applicants,
         telephones: telephones,
         employers: employers,
         residences: residences

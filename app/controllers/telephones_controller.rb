@@ -1,10 +1,10 @@
 class TelephonesController < ApplicationController
   respond_to :json
   
-  before_filter :get_user_id
+  before_filter :get_applicant_id
 
   def index
-    telephones = @database["telephones"].query.by_example({ user_id: @user_id }).map do |x|
+    telephones = @database["telephones"].query.by_example({ applicant_id: @applicant_id }).map do |x|
       {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
     end
     
@@ -12,7 +12,7 @@ class TelephonesController < ApplicationController
   end
 
   def show
-    telephones = @database["telephones"].query.by_example({ user_id: @user_id, _key: params[:id] }).map do |x|
+    telephones = @database["telephones"].query.by_example({ applicant_id: @applicant_id, _key: params[:id] }).map do |x|
       {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
     end
     
@@ -27,7 +27,7 @@ class TelephonesController < ApplicationController
     id = params[:id]
     
     telephone, status = begin
-        [ @database["telephones"].query.first_example({ user_id: @user_id, _key: id }).first, :ok ]
+        [ @database["telephones"].query.first_example({ applicant_id: @applicant_id, _key: id }).first, :ok ]
       rescue
         begin
           [ @database["telephones"].create_document({ _key: id }), :created ]
@@ -36,7 +36,7 @@ class TelephonesController < ApplicationController
         end
       end
     
-    telephone["user_id"] = @user_id
+    telephone["applicant_id"] = @applicant_id
     telephone["digits"]  = params[:telephone][:digits] || telephone["digits"]
     telephone["usage"]   = params[:telephone][:usage]  || telephone["usage"]
     
@@ -45,7 +45,7 @@ class TelephonesController < ApplicationController
     if resp["error"]
       render :json => resp["error"], status: :unprocessable_entity
     else
-      telephones = @database["telephones"].query.by_example({ user_id: @user_id, _key: id }).map do |x|
+      telephones = @database["telephones"].query.by_example({ applicant_id: @applicant_id, _key: id }).map do |x|
         {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
       end
       
@@ -55,7 +55,7 @@ class TelephonesController < ApplicationController
 
   def destroy
     begin
-      @database["telephones"].query.first_example({ user_id: @user_id, _key: params[:id] }).each do |telephone|
+      @database["telephones"].query.first_example({ applicant_id: @applicant_id, _key: params[:id] }).each do |telephone|
         telephone.delete
       end
       
@@ -67,9 +67,9 @@ class TelephonesController < ApplicationController
   
   private
   
-  def get_user_id
-    @user_id = params[:user_id]
+  def get_applicant_id
+    @applicant_id = params[:applicant_id]
     
-    head :unprocessable_entity unless @user_id
+    head :unprocessable_entity unless @applicant_id
   end
 end

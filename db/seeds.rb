@@ -1,31 +1,24 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
-#
-# Examples:
-#
-#   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
-#   Mayor.create(name: 'Emanuel', city: cities.first)
-
 require 'bcrypt'
 
 database = database || Ashikawa::Core::Database.new do |config|
   config.url = "http://localhost:8529"
 end
 
-database["users"].delete
-database["telephones"].delete
-database["logins"].delete
-database["registrants"].delete
+database["admins"].delete
+database["applicants"].delete
 database["automobiles"].delete
-database["photos"].delete
-database["solicitations"].delete
 database["employers"].delete
+database["logins"].delete
+database["photos"].delete
+database["registrants"].delete
 database["residences"].delete
+database["solicitations"].delete
+database["telephones"].delete
 
 chas_id = SecureRandom.uuid
 weston_id = SecureRandom.uuid
-user1_id = SecureRandom.uuid
-user2_id = SecureRandom.uuid
+applicant1_id = SecureRandom.uuid
+applicant2_id = SecureRandom.uuid
 
 pass1 = "12345"
 salt1 = BCrypt::Engine.generate_salt
@@ -38,6 +31,10 @@ fish2 = BCrypt::Engine.hash_secret(pass2, salt2)
 pass3 = "56789"
 salt3 = BCrypt::Engine.generate_salt
 fish3 = BCrypt::Engine.hash_secret(pass3, salt3)
+
+pass4 = "78901"
+salt4 = BCrypt::Engine.generate_salt
+fish4 = BCrypt::Engine.hash_secret(pass4, salt4)
 
 tel1_id = SecureRandom.uuid
 tel2_id = SecureRandom.uuid
@@ -99,59 +96,56 @@ res4_id = SecureRandom.uuid
 res5_id = SecureRandom.uuid
 res6_id = SecureRandom.uuid
 
-database["users"].create_document({
+database["admins"].create_document({
   _key: chas_id,
   name_first: "Charles",
   name_middle: "F",
   name_last: "Munat",
   email: "chas@munat.com",
-  is_admin: true,
+  is_superuser: true,
   salt: salt1,
   fish: fish1,
-  created_at: DateTime.now.iso8601,
-  telephone_ids: [ tel1_id, tel2_id ],
-  login_ids: [ log1_id, log2_id ]
+  created_at: DateTime.now.iso8601
 })
 
-database["users"].create_document({
+database["admins"].create_document({
   _key: weston_id,
   name_first: "Weston",
   name_last: "Sanaee",
   email: "westonsanaee@gmail.com",
-  is_admin: true,
+  is_superuser: false,
   salt: salt2,
   fish: fish2,
-  created_at: DateTime.now.iso8601,
-  telephone_ids: [ tel3_id ],
-  login_ids: [ log3_id ]
+  created_at: DateTime.now.iso8601
 })
 
-database["users"].create_document({
-  _key: user1_id,
+database["applicants"].create_document({
+  _key: applicant1_id,
   name_first: "Tom",
   name_middle: "T",
   name_last: "Tomorrow",
   email: "tom@munat.com",
-  is_admin: false,
   salt: salt3,
   fish: fish3,
   created_at: DateTime.now.iso8601,
-  telephone_ids: [ tel4_id ],
-  login_ids: [ log4_id, log5_id ],
+  telephone_ids: [ tel1_id, tel2_id ],
+  login_ids: [ log1_id, log2_id, log3_id, log4_id ],
   solicitation_ids: [ sol1_id, sol2_id ],
   employer_ids: [ emp1_id, emp2_id, emp3_id ],
   residence_ids: [ res1_id, res2_id ]
 })
 
-database["users"].create_document({
-  _key: user2_id,
+database["applicants"].create_document({
+  _key: applicant2_id,
   name_first: "Sam",
   name_middle: "S",
   name_last: "Stone",
   email: "sam@munat.com",
-  is_admin: false,
+  salt: salt4,
+  fish: fish4,
   created_at: DateTime.now.iso8601,
-  login_ids: [ log6_id ],
+  telephone_ids: [ tel3_id, tel4_id ],
+  login_ids: [ log5_id, log6_id ],
   solicitation_ids: [ sol3_id ],
   employer_ids: [ emp4_id, emp5_id, emp6_id ],
   residence_ids: [ res3_id, res4_id, res5_id, res6_id ]
@@ -161,28 +155,28 @@ database["telephones"].create_document({
   _key: tel1_id,
   digits: "206 925 3872",
   usage: "voip",
-  user_id: chas_id
+  applicant_id: applicant1_id
 })
 
 database["telephones"].create_document({
   _key: tel2_id,
   digits: "44 74 5656 3724",
   usage: "mobile",
-  user_id: chas_id
+  applicant_id: applicant1_id
 })
 
 database["telephones"].create_document({
   _key: tel3_id,
   digits: "503 555 7890",
   usage: "work",
-  user_id: weston_id
+  applicant_id: applicant2_id
 })
 
 database["telephones"].create_document({
   _key: tel4_id,
   digits: "503 555 7324",
   usage: "mobile",
-  user_id: user1_id
+  applicant_id: applicant2_id
 })
 
 database["logins"].create_document({
@@ -193,7 +187,7 @@ database["logins"].create_document({
   referer: "http://localhost:3000/login",
   session: "87cb339ec4903977d02a8cfe466e8d12",
   user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.65 Safari/537.31",
-  user_id: chas_id
+  applicant_id: applicant1_id
 })
 
 database["logins"].create_document({
@@ -204,7 +198,7 @@ database["logins"].create_document({
   referer: "http://localhost:3000/login",
   session: "87cb339ec4903977d02a8cfe466e8d12",
   user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.65 Safari/537.31",
-  user_id: chas_id
+  applicant_id: applicant1_id
 })
 
 database["logins"].create_document({
@@ -215,7 +209,7 @@ database["logins"].create_document({
   referer: "http://localhost:3000/login",
   session: "87cb339ec4903977d02a8cfe466e8d12",
   user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.65 Safari/537.31",
-  user_id: weston_id
+  applicant_id: applicant1_id
 })
 
 database["logins"].create_document({
@@ -225,7 +219,7 @@ database["logins"].create_document({
   referer: "http://localhost:3000/login",
   session: "14cb339ec4903977d02a8cfe466e8d12",
   user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.65 Safari/537.31",
-  user_id: user1_id
+  applicant_id: applicant1_id
 })
 
 database["logins"].create_document({
@@ -235,7 +229,7 @@ database["logins"].create_document({
   referer: "http://localhost:3000/login",
   session: "99cb339ec4903977d02a8cfe466e8d12",
   user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.65 Safari/537.31",
-  user_id: user1_id
+  applicant_id: applicant2_id
 })
 
 database["logins"].create_document({
@@ -245,7 +239,7 @@ database["logins"].create_document({
   referer: "http://localhost:3000/login",
   session: "99cb339ec4903977d02a8cfe466e8d12",
   user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_7_5) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.65 Safari/537.31",
-  user_id: user2_id
+  applicant_id: applicant2_id
 })
 
 database["registrants"].create_document({
@@ -517,7 +511,7 @@ database["solicitations"].create_document({
   sales_person: "John Doe",
   authorized: true,
   status: "new",
-  user_id: user1_id,
+  applicant_id: applicant1_id,
   automobile_id: auto2_id
 })
 
@@ -530,7 +524,7 @@ database["solicitations"].create_document({
   sales_person: "John Doe",
   authorized: true,
   status: "pending",
-  user_id: user1_id,
+  applicant_id: applicant1_id,
   automobile_id: auto3_id
 })
 
@@ -543,7 +537,7 @@ database["solicitations"].create_document({
   sales_person: "John Doe",
   authorized: true,
   status: "approved",
-  user_id: user2_id,
+  applicant_id: applicant2_id,
   automobile_id: auto3_id
 })
 
@@ -562,7 +556,7 @@ database["employers"].create_document({
   to_month: 9,
   to_year: 2011,
   monthly_pay_before_taxes: 3400,
-  user_id: user1_id
+  applicant_id: applicant1_id
 })
 
 database["employers"].create_document({
@@ -580,7 +574,7 @@ database["employers"].create_document({
   to_month: 9,
   to_year: 2011,
   monthly_pay_before_taxes: 3400,
-  user_id: user1_id
+  applicant_id: applicant1_id
 })
 
 database["employers"].create_document({
@@ -598,7 +592,7 @@ database["employers"].create_document({
   to_month: 9,
   to_year: 2011,
   monthly_pay_before_taxes: 3400,
-  user_id: user1_id
+  applicant_id: applicant1_id
 })
 
 database["employers"].create_document({
@@ -616,7 +610,7 @@ database["employers"].create_document({
   to_month: 9,
   to_year: 2011,
   monthly_pay_before_taxes: 3400,
-  user_id: user2_id
+  applicant_id: applicant2_id
 })
 
 database["employers"].create_document({
@@ -634,7 +628,7 @@ database["employers"].create_document({
   to_month: 9,
   to_year: 2011,
   monthly_pay_before_taxes: 3400,
-  user_id: user2_id
+  applicant_id: applicant2_id
 })
 
 database["employers"].create_document({
@@ -652,7 +646,7 @@ database["employers"].create_document({
   to_month: 9,
   to_year: 2011,
   monthly_pay_before_taxes: 3400,
-  user_id: user2_id
+  applicant_id: applicant2_id
 })
 
 database["residences"].create_document({
@@ -666,7 +660,7 @@ database["residences"].create_document({
   to_year: 2011,
   monthly_rent_or_mortgage: 1590,
   is_owner: false,
-  user_id: user1_id
+  applicant_id: applicant1_id
 })
 
 database["residences"].create_document({
@@ -679,7 +673,7 @@ database["residences"].create_document({
   from_year: 2011,
   monthly_rent_or_mortgage: 2100,
   is_owner: false,
-  user_id: user1_id
+  applicant_id: applicant1_id
 })
 
 database["residences"].create_document({
@@ -693,7 +687,7 @@ database["residences"].create_document({
   to_year: 2010,
   monthly_rent_or_mortgage: 1100,
   is_owner: false,
-  user_id: user2_id
+  applicant_id: applicant2_id
 })
 
 database["residences"].create_document({
@@ -706,7 +700,7 @@ database["residences"].create_document({
   from_year: 2010,
   monthly_rent_or_mortgage: 1745,
   is_owner: true,
-  user_id: user2_id
+  applicant_id: applicant2_id
 })
 
 database["residences"].create_document({
@@ -720,7 +714,7 @@ database["residences"].create_document({
   to_year: 2008,
   monthly_rent_or_mortgage: 925,
   is_owner: false,
-  user_id: user2_id
+  applicant_id: applicant2_id
 })
 
 database["residences"].create_document({
@@ -732,7 +726,7 @@ database["residences"].create_document({
   from_year: 2008,
   monthly_rent_or_mortgage: 1200,
   is_owner: false,
-  user_id: user2_id
+  applicant_id: applicant2_id
 })
 
 

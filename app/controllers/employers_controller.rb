@@ -1,10 +1,10 @@
 class EmployersController < ApplicationController
   respond_to :json
   
-  before_filter :get_user_id
+  before_filter :get_applicant_id
 
   def index
-    employers = @database["employers"].query.by_example({ user_id: @user_id }).map do |x|
+    employers = @database["employers"].query.by_example({ applicant_id: @applicant_id }).map do |x|
       {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
     end
     
@@ -12,7 +12,7 @@ class EmployersController < ApplicationController
   end
 
   def show
-    employers = @database["employers"].query.by_example({ user_id: @user_id, _key: params[:id] }).map do |x|
+    employers = @database["employers"].query.by_example({ applicant_id: @applicant_id, _key: params[:id] }).map do |x|
       {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
     end
     
@@ -27,7 +27,7 @@ class EmployersController < ApplicationController
     id = params[:id]
     
     employer, status = begin
-        [ @database["employers"].query.first_example({ user_id: @user_id, _key: id }).first, :ok ]
+        [ @database["employers"].query.first_example({ applicant_id: @applicant_id, _key: id }).first, :ok ]
       rescue
         begin
           [ @database["employers"].create_document({ _key: id }), :created ]
@@ -36,7 +36,7 @@ class EmployersController < ApplicationController
         end
       end
     
-    employer["user_id"] = @user_id
+    employer["applicant_id"] = @applicant_id
     employer["name_of_company"]          = params[:employer][:name_of_company]          || employer["name_of_company"]
     employer["phone_number"]             = params[:employer][:phone_number]             || employer["phone_number"]
     employer["email"]                    = params[:employer][:email]                    || employer["email"]
@@ -56,7 +56,7 @@ class EmployersController < ApplicationController
     if resp["error"]
       render :json => resp["error"], status: :unprocessable_entity
     else
-      employers = @database["employers"].query.by_example({ user_id: @user_id, _key: id }).map do |x|
+      employers = @database["employers"].query.by_example({ applicant_id: @applicant_id, _key: id }).map do |x|
         {id: x.key}.merge(x.to_hash).reject {|k,v| k == "error" }
       end
       
@@ -66,7 +66,7 @@ class EmployersController < ApplicationController
 
   def destroy
     begin
-      @database["employers"].query.first_example({ user_id: @user_id, _key: params[:id] }).each do |employer|
+      @database["employers"].query.first_example({ applicant_id: @applicant_id, _key: params[:id] }).each do |employer|
         employer.delete
       end
       
@@ -78,9 +78,9 @@ class EmployersController < ApplicationController
   
   private
   
-  def get_user_id
-    @user_id = params[:user_id]
+  def get_applicant_id
+    @applicant_id = params[:applicant_id]
     
-    head :unprocessable_entity unless @user_id
+    head :unprocessable_entity unless @applicant_id
   end
 end

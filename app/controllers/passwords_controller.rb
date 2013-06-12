@@ -1,7 +1,7 @@
 class PasswordsController < ApplicationController
   def edit
     begin
-      @database["users"].query.first_example({ code: params[:code] }).first
+      @database["admins"].query.first_example({ code: params[:code] }).first
 
       render :edit, :layout => "public.html.erb"
     rescue

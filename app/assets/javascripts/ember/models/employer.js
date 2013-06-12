@@ -13,6 +13,6 @@ BCAuto.Employer = DS.Model.extend({
   toYear: DS.attr('number'),
   monthlyPayBeforeTaxes: DS.attr('number'),
   
-  user: DS.belongsTo('BCAuto.User')
+  user: DS.belongsTo('BCAuto.Applicant')
 });
 

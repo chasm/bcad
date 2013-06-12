@@ -7,7 +7,7 @@ BCAuto.Solicitation = DS.Model.extend({
   authorized: DS.attr('boolean'),
   status: DS.attr('string'),
   
-  user: DS.belongsTo('BCAuto.User'),
+  user: DS.belongsTo('BCAuto.Applicant'),
   automobile: DS.belongsTo('BCAuto.Automobile'),
   
   name: function() {

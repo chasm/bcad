@@ -16,14 +16,15 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
         </button>
         <a class="brand" href="#">Bridge City Automotive</a>
         <div class="nav-collapse collapse">
           <ul class="nav">
             <li>{{#linkTo automobiles }}Autos{{/linkTo}}</li>
-            <li>{{#linkTo registrants }}Registrants{{/linkTo}}</li>
+            <li>{{#linkTo applicants }}Applicants{{/linkTo}}</li>
             <li>{{#linkTo solicitations }}Credit Apps{{/linkTo}}</li>
-            <li>{{#linkTo users }}Users{{/linkTo}}</li>
+            <li>{{#linkTo registrants }}Registrants{{/linkTo}}</li>
           </ul>
           <ul class="nav pull-right">
             <li><a href="/logout">Logout</a></li>
@@ -133,21 +134,21 @@
   </div>
 </script>
 
-<script type="text/x-handlebars" data-template-name="users">
+<script type="text/x-handlebars" data-template-name="applicants">
   <div class="row">
     <div class="span12">
       <div class="pull-right">
         <button id="edit_mode" class="btn btn-success" {{action "toggleMode"}}>Edit Mode</button>
-        <button id="new_user" class="btn btn-info" {{action "newUser"}}>Add a User</button>
+        <button id="new_applicant" class="btn btn-info" {{action "newApplicant"}}>Add a Applicant</button>
       </div>
     </div>
     <div class="span3">
       <table class="list-table">
-        <caption>Users</caption>
+        <caption>Applicants</caption>
         <tbody>
-          {{#each user in model}}
+          {{#each applicant in model}}
             <tr>
-              <td>{{#linkTo users.detail user}}{{user.name}}{{/linkTo}}</td>
+              <td>{{#linkTo applicants.detail applicant}}{{applicant.name}}{{/linkTo}}</td>
             </tr>
           {{/each}}
         </tbody>
@@ -159,20 +160,20 @@
   </div>
 </script>
 
-<script type="text/x-handlebars" data-template-name="users/new">
+<script type="text/x-handlebars" data-template-name="applicants/new">
   <form>
     <fieldset>
-      <legend>Add a User</legend>
+      <legend>Add an Applicant</legend>
       <div>{{view Ember.TextField valueBinding="email" placeholder="Email address"}}</div>
       <div>{{view Ember.TextField valueBinding="nameFirst" placeholder="First name"}}</div>
       <div>{{view Ember.TextField valueBinding="nameMiddle" placeholder="Middle name"}}</div>
       <div>{{view Ember.TextField valueBinding="nameLast" placeholder="Last name"}}</div>
-      <div><button class="btn btn-warning" {{action "createUser"}}>Save</button></div>
+      <div><button class="btn btn-warning" {{action "createApplicant"}}>Save</button></div>
     </fieldset>
   </form>
 </script>
 
-<script type="text/x-handlebars" data-template-name="users/detail">
+<script type="text/x-handlebars" data-template-name="applicants/detail">
   <fieldset>
     <legend>{{name}}</legend>
     <p>{{email}}</p>
@@ -180,7 +181,7 @@
   </fieldset>
 </script>
 
-<script type="text/x-handlebars" data-template-name="users/edit">
+<script type="text/x-handlebars" data-template-name="applicants/edit">
   <form>
     <fieldset>
       <legend>Edit {{name}}</legend>
@@ -188,11 +189,11 @@
       <div>{{view Ember.TextField valueBinding="nameFirst" placeholder="First name"}}</div>
       <div>{{view Ember.TextField valueBinding="nameMiddle" placeholder="Middle name"}}</div>
       <div>{{view Ember.TextField valueBinding="nameLast" placeholder="Last name"}}</div>
-      <div><button class="btn btn-warning" {{action "createUser"}}>Save Changes</button></div>
+      <div><button class="btn btn-warning" {{action "createApplicant"}}>Save Changes</button></div>
     </fieldset>
   </form>
 </script>
 
 <script type="text/x-handlebars" data-template-name="profile">
-  <p>User Profile</p>
+  <p>Admin Profile</p>
 </script>

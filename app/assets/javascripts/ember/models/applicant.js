@@ -1,4 +1,4 @@
-BCAuto.User = DS.Model.extend({
+BCAuto.Applicant = DS.Model.extend({
   nameFirst: DS.attr('string'),
   nameMiddle: DS.attr('string'),
   nameLast: DS.attr('string'),
